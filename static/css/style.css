@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    min-height: 100vh;
+    /* Fallback gradient background, browser types*/
+    background: linear-gradient(to right top, #040d15, #011063);
+    /* Image Background  */
+    background-image: url("../images/background6.jpg");
+    /* Fallback gradient background */
+    background-image: url("../images/background5.jpg")center center no-repeat, linear-gradient(to right top, #040d15, #011063);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glass {
+    min-height: 85vh;
+    width: 75%;
+    padding: 10vh;
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+    border-radius: 1rem;
+    border-style: outset;
+    border: rgb(216, 10, 10);
+    border-width: 20px;
+    z-index: 100;
+    backdrop-filter: blur(1rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+}
+
+.Card1,
+.Card2 {
+    min-height: 200px;
+    width: 200px;
+    border: white;
+    border-radius: 10% 10%;
+    z-index: 5;
+    backdrop-filter: blur(20rem);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+
+    &:after {
+        content: '';
+        top: 0;
+        transform: translateX(100%) rotate(30deg);
+        width: 200%;
+        height: 200%;
+        position: absolute;
+        z-index: 1;
+        animation: shine 4s infinite ease-in;
+        background:
+            linear-gradient(to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(128, 186, 232, 0) 99%,
+                rgba(128, 186, 232, 0) 100%);
+    }
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(30deg);
+    }
+
+    60% {
+        transform: translateX(-100%) translateY(-100%) rotate(30deg);
+    }
+
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(30deg);
+    }
+}
+
+.Card1 {
+    background: linear-gradient(to bottom, #c39738, #deb761, #c39738);
+
+
+    &:after {
+        animation-delay: 5s;
+    }
+}
+
+.Card2 {
+    background: linear-gradient(to bottom, #c39738, #deb761, #c39738);
+
+
+
+    &:after {
+        animation-delay: 6s;
+    }
+}
+
+.Card1_inner,
+.Card2_inner {
+    min-height: 30vh;
+    width: 25vh;
+    display: grid;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotation {
+    0% {
+        --gradient-angle: 0deg;
+    }
+
+    100% {
+        --gradient-angle: 360deg;
+    }
+
+}
+
+.Card1_Area,
+.Card2_Area {
+    position: relative;
+    height: 25vh;
+    background: linear-gradient(var(--gradient-angle), #3890c3, #6182de, #7938c3);
+    aspect-ratio: 1 /1.5;
+    border-radius: 10% 10%;
+
+    &::after {
+        filter: blur(2rem);
+        z-index: 1;
+        animation: rotation 20s linear infinite ease-in
+    }
+}
+
+.circle1,
+.circle2 {
+    background: white;
+    background: linear-gradient(to right bottom,
+            rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+    height: 6rem;
+    width: 6rem;
+    position: absolute;
+    z-index: 3;
+    border-radius: 50%;
+
+}
+
+.circle1 {
+    top: 5%;
+    left: 3%;
+}
+
+.circle2 {
+    bottom: 23%;
+    right: 10.5%;
+    z-index: 3;
+}
