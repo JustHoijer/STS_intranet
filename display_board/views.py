@@ -37,7 +37,7 @@ def create_display(request):
             return response
 
     context["form"] = form
-    return render(request, "display_board//create_display.html", context)
+    return render(request, "display_board/create_display.html", context)
 
 
 def delete_display(request, pk):
@@ -59,7 +59,7 @@ def edit_display(request, pk):
     context = {}
     carousel = Carousel.objects.get(key=pk)
     context["carousel"] = carousel
-    return render(request, "display_board//edit_display.html", context)
+    return render(request, "display_board/edit_display.html", context)
 
 
 def slide_create(request, pk):
@@ -80,7 +80,7 @@ def slide_create(request, pk):
     print("end2")
     context["form"] = form
     context["carousel_id"] = pk
-    return render(request, "display_board//slide_form.html", context)
+    return render(request, "display_board/slide_form.html", context)
 
 
 def slide_detail(request, pk):
@@ -88,7 +88,7 @@ def slide_detail(request, pk):
     obj = get_object_or_404(Slide, key=pk)
     context["slide"] = obj
 
-    return render(request, "display_board//slide_detail.html", context)
+    return render(request, "display_board/slide_detail.html", context)
 
 
 def slide_edit(request, pk):

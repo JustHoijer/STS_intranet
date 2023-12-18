@@ -194,12 +194,12 @@ EMAIL_USE_SSL = False
 # CSRF_COOKIE_SECURE = False
 # CSRF_COOKIE_HTTPONLY = False
 ##########
-# AAD_CONFIG = AADConfig.parse_json(file_path="mysite/aad.config.json")
-# MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
-# ERROR_TEMPLATE = (
-#    "auth/{}.html"  # for rendering 401 or other errors from msal_middleware
-# )
-# MIDDLEWARE.append("ms_identity_web.django.middleware.MsalMiddleware")
+AAD_CONFIG = AADConfig.parse_json(file_path="STS_Portal/aad.config.json")
+MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
+ERROR_TEMPLATE = (
+    "auth/{}.html"  # for rendering 401 or other errors from msal_middleware
+)
+MIDDLEWARE.append("ms_identity_web.django.middleware.MsalMiddleware")
 # deployment prep
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False

@@ -16,17 +16,21 @@ Including another URLconf
 """
 # from django.conf import settings
 # from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
 # from django.urls import re_path
-# from ms_identity_web.django.msal_views_and_urls import MsalViews
+from ms_identity_web.django.msal_views_and_urls import MsalViews
+
 # from . import views
 
-# msal_urls = MsalViews(settings.MS_IDENTITY_WEB).url_patterns()
+msal_urls = MsalViews(settings.MS_IDENTITY_WEB).url_patterns()
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("pages.urls")),  # pages app, static urls
     path("display/", include("display_board.urls")),  # dislay board app
     path("scheduler/", include("scheduler.urls")),
+    path(f"{settings.AAD_CONFIG.django.auth_endpoints.prefix}/", include(msal_urls)),
 ]
