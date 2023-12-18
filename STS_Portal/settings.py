@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-# from ms_identity_web import IdentityWebPython
-# from ms_identity_web.configuration import AADConfig
+from ms_identity_web import IdentityWebPython
+from ms_identity_web.configuration import AADConfig
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,8 +49,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third party
+    "crispy_forms",
+    "crispy_bootstrap5",
     # Local
-    "pages.apps.PagesConfig",  # static pages, including landing page
+    "pages.apps.PagesConfig",  # static pages, including landing page,
+    "display_board.apps.DisplayBoardConfig",  # display board app
+    "scheduler.apps.SchedulerConfig",  # ATE Schedule app
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

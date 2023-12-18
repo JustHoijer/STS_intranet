@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<!-- The title of the web page -->
+<title>STS Tester Scheduler</title>
+
+<head>
+
+    <!-- Load static files such as JavaScript and CSS -->
+    {% load static %}
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <!-- Load the dhtmlxScheduler library and its CSS -->
+    <script src="/static/timeline/dhtmlxscheduler.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/static/timeline/dhtmlxscheduler_material.css" title="no title" charset="utf-8">
+    {% comment %}
+    <script src="static/suite/suite.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/static/suite/suite.css" type="text/css"> {% endcomment %}
+
+    <!-- Load other required libraries and CSS -->
+    <script src="//cdn.dhtmlx.com/edge/dhtmlx.js?v=6.0.4"></script>
+    <link rel="stylesheet" href="//cdn.dhtmlx.com/edge/dhtmlx.css?v=6.0.4" type="text/css">
+    {% comment %}
+    <script src="https://cdn.dhtmlx.com/scheduler/edge/dhtmlxscheduler.js"></script> {% endcomment %}
+    {% comment %}
+    <link href="https://cdn.dhtmlx.com/scheduler/edge/dhtmlxscheduler.css" rel="stylesheet"> {% endcomment %}
+    <link rel="stylesheet" href="/static/timeline.css" type="text/css">
+
+    <!-- Favicon for the website -->
+    <link rel="shortcut icon" type="image/png" href="static/favicon/Micross_logo_small.png">
+</head>
+
+<body>
+    <br />
+
+    <!-- Calendar container -->
+    <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+        <div class="dhx_cal_navline">
+            <!-- Calendar navigation buttons -->
+            <div class="dhx_cal_prev_button">&nbsp;</div>
+            <div class="dhx_cal_next_button">&nbsp;</div>
+            <div class="dhx_cal_today_button"></div>
+            <div class="dhx_minical_icon" id="dhx_minical_icon" style="left: 80% !important;">&nbsp;</div>
+            <div class="dhx_cal_date"></div>
+
+            <!-- Link to go back to the site -->
+            <a class="home_button" href="{% url 'pages:landing' %}">TO SITE</a>
+
+            {% comment %}
+            <div class="dhx_cal_tab" name="day_tab"></div>
+            <div class="dhx_cal_tab" name="week_tab"></div>
+            <div class="dhx_cal_tab" name="month_tab"></div> {% endcomment %}
+            <img src="/static/favicon/Micross_logo.png" class="header_logo">
+            <div class="dhx_cal_tab dhx_cal_tab_first" name="timeline1_tab" style="left:184px;"></div>
+            <div class="dhx_cal_tab dhx_cal_tab_last" name="timeline2_tab" style="left: 273px;"></div>
+            {% comment %} style="right:280px;" {% endcomment %}
+        </div>
+        <div class="dhx_cal_header"></div>
+        <div class="dhx_cal_data"></div>
+    </div>
+
+    <!-- Button to add a new event -->
+    <div class="add_event_button" data-tooltip="Create new event"><span></span></div>
+    <div class="legend">
+        <!-- Legend items -->
+        <div class="legend-item">
+            <!-- Color box for 'Production' -->
+            <div class="legend-color" style="background-color: #213ba2;"></div>
+            <!-- Text for 'Production' -->
+            <div class="legend-text">Production</div>
+        </div>
+        <div class="legend-item">
+            <!-- Color box for 'Calibration' -->
+            <div class="legend-color" style="background-color: #8c87a6;"></div>
+            <!-- Text for 'Calibration' -->
+            <div class="legend-text">Calibration</div>
+        </div>
+        <div class="legend-item">
+            <!-- Color box for 'Engineering' -->
+            <div class="legend-color" style="background-color: #188a7d;"></div>
+            <!-- Text for 'Engineering' -->
+            <div class="legend-text">Engineering</div>
+        </div>
+        <div class="legend-item">
+            <!-- Color box for 'Maintenance' -->
+            <div class="legend-color" style="background-color: #ff844f;"></div>
+            <!-- Text for 'Maintenance' -->
+            <div class="legend-text">Maintenance</div>
+        </div>
+        <div class="legend-item">
+            <!-- Color box for 'Maintenance' -->
+            <div class="legend-color" style="background-color: #d90429;"></div>
+            <!-- Text for 'Maintenance' -->
+            <div class="legend-text">Window Lot</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // JavaScript code for configuring the scheduler
+
+        // Check if the user is authenticated
+        {% if  claims_to_display.items %}
+        var isAuthenticated = true
+        {% else %}
+        var isAuthenticated = false
+        {% endif %}
+
+        // Configure scheduler settings
+        scheduler.config.date_format = "%Y-%m-%d %H:%i";
+        scheduler.setLoadMode("week");
+
+        // Load various plugins for the scheduler
+        scheduler.plugins({
+            timeline: true,
+            treetimeline: true,
+            daytimeline: true,
+            collision: true,
+            readonly: true,
+            tooltip: true,
+            units: true,
+            minical: true,
+            treetimeline: true,
+            editors: true,
+        });
+
+        // Customize labels for the timeline view
+        scheduler.locale.labels.timeline_tab = "Timeline";
+        scheduler.locale.labels.section_custom = "Section";
+
+        // Configure details display settings
+        scheduler.config.details_on_create = true;
+        scheduler.config.details_on_dblclick = true;
+        scheduler.config.fix_tab_position = false;
+
+        // Customize labels for the timeline tabs
+        scheduler.locale.labels.timeline2_tab = "Week"
+        scheduler.locale.labels.timeline1_tab = "Day"
+
+        // Set scheduler to readonly mode if the user is not authenticated
+        if (!isAuthenticated)
+            scheduler.config.readonly = true;
+
+        // Load data lists for people, sections, testers, customers, and devices
+        var people = scheduler.serverList('people');
+        var sections = scheduler.serverList("sections");
+        var testerslist = scheduler.serverList('testerslist');
+        var customers = scheduler.serverList('customers');
+        var devices = scheduler.serverList('devices');
+        //var departments = scheduler.serverList('departments');
+        var departments = [
+            { key: 'PROD', label: 'Production' },
+            { key: 'CAL', label: 'Calibration' },
+            { key: 'ENG', label: "Engineer" },
+            { key: 'MT', label: 'Maintenance' }
+        ]
+
+        // Create a timeline instantiation for the day view
+        scheduler.createTimelineView({
+            name: "timeline1",
+            x_unit: "hour", // measuring unit of the X-Axis.
+            x_date: "%H:%i",  // date format of the X-Axis
+            x_step: 1,       // X-Axis step in 'x_unit's
+            x_size: 24,       // X-Axis length specified as the total number of 'x_step's
+            //x_start:16,      // X-Axis offset in 'x_unit's
+            x_length: 24,     // number of 'x_step's that will be scrolled at a time
+            event_dy: "full",
+            y_unit: sections,
+            y_property: "tester", // mapped data property
+            render: "tree",             // view mode
+            section_autoheight: false,
+            //columns: [{ label: "Tester #",  width: 100, template: function(obj){ return obj.label; } }]
+            scrollable: true,
+            folder_dy: 25,
+            dy: 59,
+            dx: 150,
+            column_width: 50,
+            //scroll_position = new Date(2018, 11, 3)
+        });
+
+        // Create a timeline instantiation for the week view
+        scheduler.createTimelineView({
+            name: "timeline2",
+            x_unit: "hour", // measuring unit of the X-Axis.
+            x_date: "%H:%i",  // date format of the X-Axis
+            x_step: 6,       // X-Axis step in 'x_unit's
+            x_size: 28,       // X-Axis length specified as the total number of 'x_step's
+            //x_start:16,      // X-Axis offset in 'x_unit's
+            x_length: 28,     // number of 'x_step's that will be scrolled at a time
+            event_dy: "full",
+            y_unit: sections,      // sections of the view (titles of Y-Axis)
+            y_property: "tester", // mapped data property
+            render: "tree",             // view mode
+            section_autoheight: false,
+            //columns: [{ label: "Tester #",  width: 100, template: function(obj){ return obj.label; } }]
+            scrollable: true,
+            folder_dy: 25,
+            dy: 59,
+            dx: 150,
+            column_width: 50,
+            //scroll_position = new Date(2018, 11, 3)
+            second_scale: {
+                x_unit: "day", // the measuring unit of the axis (by default, 'minute')
+                x_date: "%F %d" //the date format of the axis ("July 01")
+            }
+        });
+
+        // Configuring the lightbox(input form) for when the user is an admin
+        //{{ user.is_staff |lower }}
+        if (true) {
+            scheduler.config.lightbox.sections = [
+                { name: "*Locked*", height: 10, type: "checkbox", map_to: 'locked' },
+                { name: "Program", height: 30, map_to: "text", type: "textarea", focus: true },
+                { name: "Tester", height: 30, type: "select", options: testerslist, map_to: "tester" },
+                { name: "time", height: 30, type: "time", map_to: "auto" },
+                {
+                    name: "PM/ENG", height: 30, type: "combo", options: people,
+                    map_to: 'person', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                { name: "Department", height: 30, type: "select", map_to: 'department', options: departments },
+                {
+                    name: "Customer", height: 30, type: "combo", options: customers,
+                    map_to: 'customer', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                {
+                    name: "Part/Lot Num", height: 30, type: "combo", options: devices,
+                    map_to: 'device', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                { name: "Job Num", height: 30, type: "textarea", map_to: 'job_number' },
+                { name: "Test Temps", height: 30, type: "textarea", map_to: 'test_temps' },
+                { name: "Steps", height: 30, type: "textarea", map_to: 'steps' },
+                { name: "Critical Peripherals", height: 30, type: "textarea", map_to: 'peripherals' },
+                { name: "Quantity", height: 30, type: "textarea", map_to: 'number_units' },
+                { name: "Window Lot", height: 30, type: "checkbox", map_to: 'window_lot' },
+                { name: "Description", height: 60, type: "textarea", map_to: 'description' },
+            ];
+        }
+        // Configuring the lightbox(input form) for when the user is not an admin
+        else {
+            scheduler.config.lightbox.sections = [
+                { name: "Program", height: 30, map_to: "text", type: "textarea", focus: true },
+                { name: "Tester", height: 30, type: "select", options: testerslist, map_to: "tester" },
+                { name: "time", height: 30, type: "time", map_to: "auto" },
+                {
+                    name: "PM/ENG", height: 30, type: "combo", options: people,
+                    map_to: 'person', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                { name: "Department", height: 30, type: "select", map_to: 'department', options: departments },
+                {
+                    name: "Customer", height: 30, type: "combo", options: customers,
+                    map_to: 'customer', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                {
+                    name: "Part/Lot Num", height: 30, type: "combo", options: devices,
+                    map_to: 'device', filtering: true, image_path: "//cdn.dhtmlx.com/edge/imgs/",
+                },
+                { name: "Job Num", height: 30, type: "textarea", map_to: 'job_number' },
+                { name: "Test Temps", height: 30, type: "textarea", map_to: 'test_temps' },
+                { name: "Steps", height: 30, type: "textarea", map_to: 'steps' },
+                { name: "Critical Peripherals", height: 30, type: "textarea", map_to: 'crit_peripherals' },
+                { name: "Quantity", height: 30, type: "textarea", map_to: 'number_units' },
+                { name: "Window Lot", height: 30, type: "checkbox", map_to: 'window_lot' },
+                { name: "Description", height: 60, type: "textarea", map_to: 'description' },
+            ];
+        }
+
+
+        // Defining what the text on each reservation section looks like
+        scheduler.templates.event_bar_text = function (start, end, event) {
+            var ltxt = '';
+            // If it is locked by an admin, display the words locked
+            if (event.locked) {
+                ltxt = '*Locked* '
+            }
+            if (event.person) {
+                // If the reservation is a window lot, change the text type to be more of a warning
+                if (event.window_lot)
+                    return '<wltext>' + ltxt + capF(event.text) + ' ' + getLabel(event.person, people) + '</wltext>';
+                else
+                    return ltxt + capF(event.text) + ' ' + getLabel(event.person, people);
+            } else
+                return '<em>Help</em>'
+        };
+        {% comment %} scheduler.templates.lightbox_header = function (start, end, ev) {
+            if (ev.locked)
+
+    }; {% endcomment %}
+
+        // Custom function to apply special css when a reservation is a window lot,
+        // or depending on the type of person who reserved it
+        scheduler.templates.event_class = function (start, end, event) {
+            var css = "";
+            if (event.window_lot)
+                css += 'window_lot'
+            else {
+                if (event.department)
+                    css += "event_" + event.department;
+                console.log(css)
+
+            }
+            return css; // default return
+        };
+
+        var format = scheduler.date.date_to_str("%Y-%m-%d %H:%i");
+
+        // Defines the text that pops up when you hover your mouse over the reservation
+        scheduler.templates.tooltip_text = function (start, end, event) {
+            return "<b>Program:</b> " + capF(event.text) +
+                "<br/><b>PM/ENG:</b> " + getLabel(event.person, people) +
+                "<br/><b>Department:</b> " + getLabel(event.department, departments) +
+                "<br/><b>Tester:</b> " + getLabel(event.tester, testerslist) +
+                "<br/><b>Start date:</b> " + format(start) +
+                "<br/><b>End date:</b> " + format(end) +
+                "<br/><b>Customer:</b> " + getLabel(event.customer, customers) +
+                "<br/><b>Device:</b> " + getLabel(event.device, devices) +
+                "<br/><b>Job #:</b> " + capF(event.job_number) +
+                "<br/><b>Steps:</b> " + capF(event.steps) +
+                "<br/><b>Test Temps:</b> " + capF(event.test_temps) +
+                "<br/><b>Quantity:</b> " + event.number_units;
+        };
+
+        // Initialize the scheduler
+        scheduler.init("scheduler_here", new Date(), "timeline2");
+
+        // Load the initial data from the database
+        scheduler.load("/scheduler/data/", "json");
+
+        // Creata a dataprocessor to process the data from the database to a format prefered by the js
+        var dp = scheduler.createDataProcessor({ url: "/scheduler/data/", mode: "REST" });
+
+        // Custom function to capitalize the first letter of a string for display purposes
+        function capF(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Custom function to return the label given a key from an array of similar objects
+        function getLabel(key1, arrr) {
+            const foundObject = arrr.find(obj => obj.key === key1);
+            return foundObject ? foundObject.label : null;
+        }
+
+        // Same as getLabel function but for getting peoples roles specifically
+        function getRole(key1) {
+            const foundObject = people.find(obj => obj.key === key1);
+            return foundObject ? foundObject.role : null;
+        }
+
+        // Create the mincal icon and functionality
+        function show_minical() {
+            if (scheduler.isCalendarVisible())
+                scheduler.destroyCalendar();
+            else
+                scheduler.renderCalendar({
+                    position: "dhx_minical_icon",
+                    date: scheduler.getState().date,
+                    navigation: true,
+                    handler: function (date, calendar) {
+                        scheduler.setCurrentView(date);
+                        scheduler.destroyCalendar();
+                    }
+                });
+        }
+
+        // Custom add event button logic
+        scheduler.event(document.querySelector(".add_event_button"), "click", function addNewEv() {
+            scheduler.addEventNow();
+        });
+
+
+        scheduler.event(document.querySelector("#dhx_minical_icon"), "click", show_minical);
+
+        {% comment %} scheduler.attachEvent("onLoadEnd", function () {
+            console.log(people)
+            //console.log(getRole(people[0].role))
+        }); {% endcomment %}
+
+        // Logic which regulates what types of events can be created
+        scheduler.attachEvent("onEventSave", function (id, ev) {
+            // Dictates that an event must have a person attached to it
+            if (!ev.person) {
+                scheduler.alert("You must select a PM/ENG");
+                return false;
+            }
+            // Dictates that the number of units must be a number
+            if (ev.number_units && !(/^\d+$/.test(ev.number_units))) {
+                scheduler.alert("Number of units can only contain numbers");
+                return false;
+            }
+            return true;
+        });
+
+        // Checker which validates the new event/data that the user is trying to add, making sure the event doesn't overlap with others
+        dp.attachEvent("onBeforeUpdate", function (id, status, data) {
+            startDate = data.start_date;
+            endDate = data.end_date;
+
+            var xhr = new XMLHttpRequest();
+            var url = '/scheduler/check/?start_date=' + startDate + '&end_date=' + endDate + '&tester=' + data.tester + '&id=' + data.id;
+            //console.log(url)
+            xhr.open('GET', url, false);
+            xhr.send();
+
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var is_allowed = response.is_allowed;
+                if (!is_allowed) {
+                    // Display an error message or take any other appropriate action
+                    scheduler.alert('Date ovelaps with others, </br> please reload and/or choose different timeslot');
+
+                    return false; // Prevent event creation
+                }
+            } else {
+                // Handle server-side error or other issues
+                console.error('Error checking allowed date.');
+                return false;
+            }
+
+            return true;
+        });
+
+        dp.attachEvent("onValidationError", function (id, details) {
+            //reload actual data from the server
+            scheduler.clearAll();
+            //scheduler.load("/scheduler/data/", "json");
+            scheduler.load("/scheduler/data/");
+        });
+
+        // Custom functions which make the reservation readonly if it is locked and the user is not an admin
+        function block_readonly(id) {
+            if (!id) return true;
+            return !this.getEvent(id).locked;
+        }
+
+        function form_readonly(id) {
+            if (!id) return true;
+            if (this.getEvent(id).locked) scheduler.config.readonly_form = true;
+            return true;
+        }
+
+        function lightboxDone() {
+            scheduler.config.readonly_form = false;
+            return true;
+        }
+
+        // Limits what users can move events and interact with events
+        // {{ user.is_staff |lower }}
+
+        {% if 'Schedule.Lock' in claims_to_display.roles %}
+        var is_staff = true
+        {% else %}
+        var is_staff = false
+        {% endif %}
+
+        if (!is_staff) {
+            console.log('does smth');
+            scheduler.attachEvent("onBeforeDrag", block_readonly);
+            scheduler.attachEvent("onDblClick", form_readonly);
+            scheduler.attachEvent("onAfterLightbox", lightboxDone);
+        }
+    </script>
+</body>

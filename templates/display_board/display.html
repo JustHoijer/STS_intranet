@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Display Board{% endblock %}
+{% block header %}
+{% load static %}
+<link rel="stylesheet" href="static/css/display.css" type="text/css">
+{% endblock %}
+{% block content %}
+{% if carousel.slide.count == 0 %}
+<p>There are no slides for this display board</p>
+
+{% else %}
+
+<div id="displayCarousel" class="carousel slide" data-bs-theme="dark" data-bs-ride="carousel">
+    <i class="bi bi-fullscreen"></i>
+    <div class="carousel-inner">
+        {% include "display_slide_list.html" with carousel=carousel %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#displayCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#displayCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<button class="fullscreen-btn" id="fullscreen-btn" title="Toggle Fullscreen">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-fullscreen"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+            d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" />
+    </svg>
+</button>
+<script src="static/js/fullscreen.js"></script>
+{% endif %}
+{% endblock %}

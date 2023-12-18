@@ -1,0 +1,19 @@
+.logo-container {
+    background-color: white;
+    width: 160px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    
+
+}
+
+.navbar-logo {
+    /* Adjust the logo size if needed */
+    width: 150px;
+    /* height: 43px; */
+    /* Add other styles as needed */
+}

@@ -1,0 +1,5 @@
+{% for slide in carousel.slide.all %}
+{% with is_active=forloop.first %}
+{% include "display_board/display_slide_detail.html" with slide=slide is_active=is_active %}
+{% endwith %}
+{% endfor %}

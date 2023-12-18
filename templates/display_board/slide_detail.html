@@ -1,0 +1,54 @@
+{% load static %}
+<tr hx-target="this" hx-swap="outerHTML">
+    <td class="border-0" scope="row">
+        <div class="row">
+            <div class="form-row mb-3 col-md-4">
+                <div>
+                    <b>Name: {{ slide.name }}</b>
+                </div>
+                <div>
+                    Label:
+                    {% if slide.label %}
+                        {{ slide.label }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </div>
+                <div>
+                    Caption:
+                    {% if slide.caption %}
+                        {{ slide.caption }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </div>
+                <div>
+                    Image: {{ slide.image_name }}
+                </div>
+                <div>
+                    Duration: {{ slide.duration }}s
+                </div>
+                <div class="d-flex">
+
+                    <button hx-get="{% url 'display_board:slide_edit' pk=slide.key %}" class="btn btn-primary btn-sm">
+                        Edit
+                    </button>
+                    <form class="ms-2">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm"
+                                hx-post="{% url 'display_board:slide_delete' pk=slide.key %}"
+                                hx-confirm="Are you sure?">
+                            Delete
+                        </button>
+                    </form>
+
+                </div>
+
+                {% comment %}  {% endcomment %}
+            </div>
+            <div class="col">
+                <img src="{{ slide.image.url }}"/>
+            </div>
+        </div>
+    </td>
+</tr>

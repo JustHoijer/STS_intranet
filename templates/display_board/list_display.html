@@ -1,0 +1,43 @@
+<div class="card">
+    <table class="table table-striped m-0">
+        <thead>
+        <tr>
+            <th class="border-0" scope="col">Name</th>
+            <th class="border-0" scope="col">Number of Slides</th>
+            <th class="border-0" scope="col">Time Created</th>
+            <th class="border-0" scope="col">Edit</th>
+            <th class="border-0" scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for carousel in object_list %}
+            <tr hx-target="this" hx-swap="outerHTML">
+                <th class="border-0" scope="row">
+                    <a href="{% url 'display_board:display' pk=carousel.key %}">
+                        {{ carousel.name }}
+                    </a>
+                </th>
+                <td class="border-0">{{ carousel.slide.count }}</td>
+                <td class="border-0">{{ carousel.timestamp }}</td>
+                <td class="border-0">
+                    <a class="ml-2" href="{% url 'display_board:edit_display' pk=carousel.key %}">
+                        <button class="btn btn-secondary btn-sm">
+                            Edit
+                        </button>
+                    </a>
+                </td>
+                <td class="border-0">
+                    <form class="ml-2">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm"
+                                hx-post="{% url 'display_board:delete_display' pk=carousel.key %}"
+                                hx-confirm="Are you sure?">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

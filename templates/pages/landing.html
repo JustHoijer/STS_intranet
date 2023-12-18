@@ -1,0 +1,42 @@
+<!-- templates/home.html -->
+{% extends "_base.html" %}
+{% load static %}
+{% block pageContent %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Landing</title>
+    <link rel="stylesheet" href="static/css/landing.css" />
+</head>
+
+<body>
+    <main>
+        <section class="glass">
+            <a href="{% url 'scheduler:index'%}">
+                <div class="Card1">
+                    <div class="Card1_inner">
+                        <h3></h3>
+                        <div class="circle">
+                            <img src="static/favicon/ATE_Icon.png" />
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'display_board:index' %}" <div class="Card2">
+                <div class="Card2_inner">
+                    <h3></h3>
+                    <div class="circle">
+                        <img src="static/favicon/Management_Icon.png" />
+                    </div>
+                </div>
+                </div>
+            </a>
+        </section>
+    </main>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</body>
+
+
+{% endblock %}

@@ -1,0 +1,184 @@
+html, body{
+    height:100%;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+wltext{
+    color: #ffffff;
+    font-size: 100%;
+    padding-top: 1px !important;
+    line-height: 1;
+    margin-top: -5px;
+}
+.dhx_cal_light{
+    width: 480px !important;
+}
+.dhx_cal_larea{
+    overflow: auto;
+    max-height: 70vh;
+}
+
+ .dhx_cal_event_line.window_lot{
+     /* background-color: #FF5722 !important; */
+     /* border-color: #000000 !important; */
+     background-color: #d90429;
+     border-color: #ff0000; 
+     border-width: 4px;
+     border-style: groove;
+ }
+
+ .dhx_cal_event_line.event_ENG{
+     background-color: #188a7d  !important;
+ }
+ .dhx_cal_event_line.event_PROD{
+     background-color: #213ba2 !important;
+ }
+ .dhx_cal_event_line.event_CAL{
+    background-color: #8c87a6 !important;
+}
+/* 9b97b2 */
+.dhx_cal_event_line.event_MT{
+    background-color: #ff844f !important;
+}
+/* FF9B71 */
+
+.header_logo{
+    height: 45px;
+    position: absolute;
+    left: 14px;
+    bottom: 10px;
+}
+
+ .add_event_button{
+     position: absolute;
+     width: 55px;
+     height: 55px;
+     background: #ff5722;
+     border-radius: 50px;
+     bottom: 20px;
+     right: 180px;
+     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3);
+     z-index: 5;
+     cursor:pointer;
+ }
+ .add_event_button:after{
+     background: #000;
+     border-radius: 2px;
+     color: #FFF;
+     content: attr(data-tooltip);
+     margin: 16px 0 0 -137px;
+     opacity: 0;
+     padding: 4px 9px;
+     position: absolute;
+     visibility: visible;
+     font-family: "Roboto";
+     font-size: 14px;
+     visibility: hidden;
+     transition: all .5s ease-in-out;
+ }
+ .add_event_button:hover{
+     background: #ff774c;
+ }
+ .add_event_button:hover:after{
+     opacity: 0.55;
+     visibility: visible;
+ }
+ .add_event_button span:before{
+     content:"";
+     background: #fff;
+     height: 16px;
+     width: 2px;
+     position: absolute;
+     left: 26px;
+     top: 20px;
+ }
+ .add_event_button span:after{
+     content:"";
+     height: 2px;
+     width: 16px;
+     background: #fff;
+     position: absolute;
+     left: 19px;
+     top: 27px;
+ }
+
+ 
+ .home_button{
+    position: absolute;
+    width: 88px;
+    height: 29.5px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    border: 1px solid rgb(2, 136, 209);
+    bottom: 13.5px;
+    left: 370px;
+    z-index: 5;
+    cursor:pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(2, 136, 209);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: "Roboto";
+    text-decoration: none;
+}
+
+.home_button:hover{
+    background: rgb(231, 248, 255);
+}
+
+/* .dhx_cal_ltext textarea {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -2px;
+    
+  } */
+ 
+  /* .dhx_cal_light {
+    width: 700px;
+  }
+  
+  .dhx_cal_lsection {
+    width: 50%; 
+  }
+  
+  .dhx_cal_ltext textarea {
+    width: 30%;
+    height: 100%;
+    resize: none; 
+    box-sizing: border-box; 
+  } */
+  .legend {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  /* Style for the legend items */
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  /* Style for the color boxes */
+  .legend-color {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    border: 1px solid #000;
+  }
+
+  /* Style for the text */
+  .legend-text {
+    font-size: 18px;
+    font-family: sans-serif;
+  }
+  

@@ -1,0 +1,10 @@
+{% load static %}
+<div class="carousel-item {% if is_active %}active{% endif %}" data-bs-interval="{{ slide.dur_millis }}">
+    <div class="image-container">
+        <img src="{{ slide.image.url }}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+            <h5>{{ slide.label }}</h5>
+            <p>{{ slide.caption }}</p>
+        </div>
+    </div>
+</div>

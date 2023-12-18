@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Display{% endblock %}
+{% block header %}
+{% load static %}
+<link rel="stylesheet" href="static/css/display.css" type="text/css">
+{% endblock %}
+{% block content %}
+
+<div class="card">
+    <table class="table table-striped m-0">
+        <thead>
+            <tr>
+                <th>
+                    <div class="row">
+                        <div class='col d-flex align-items-center' style="font-size: 32px; font-weight: 600;">{{
+                            carousel.name }}</div>
+                        <div class="col d-flex justify-content-center">
+                            <a href="{% url 'display_board:display' pk=carousel.key %}" type="button"
+                                class="btn btn-outline-primary btn-lg">View Display Board</a>
+                        </div>
+                        <div class="col ml-auto d-flex justify-content-end">
+                            <a href="{% url 'display_board:index' %}" type="button"
+                                class="btn btn-outline-secondary btn-lg">Back to List</a>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="carousel-slides">
+            {% include "display_board/slide_list.html" with carousel=carousel %}
+        </tbody>
+    </table>
+    <div class="card-body px-3" hx-target="#carousel-slides" hx-swap="beforeend">
+        <button hx-get="{% url 'display_board:slide_create' pk=carousel.key %}" type="submit"
+            class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-plus"></i>
+            Add Slide
+        </button>
+    </div>
+</div>
+{% endblock %}

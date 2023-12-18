@@ -27,4 +27,6 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("pages.urls")),  # pages app, static urls
+    path("display/", include("display_board.urls")),  # dislay board app
+    path("scheduler/", include("scheduler.urls")),
 ]
